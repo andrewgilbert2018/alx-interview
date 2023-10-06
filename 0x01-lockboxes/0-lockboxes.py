@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 ALX Interview on Lockboxes
-This code solve the problem of 
+This code solve the problem of
 lockbox by checking the state of every box
 after traversing the keys
 """
