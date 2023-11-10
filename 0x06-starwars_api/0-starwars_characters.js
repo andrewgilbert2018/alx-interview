@@ -1,25 +1,32 @@
 #!/usr/bin/node
 const request = require('request');
-const API_URL = 'https://swapi-api.hbtn.io/api';
+const MyFiles = process.argv.slice(2);
+let data;
+let i;
+let MyList = [];
+function GetCharId (id) {
+  request('https://swapi-api.hbtn.io/api/films/' + id,
+    async function (error, response, body) {
+      if (error) console.error(error);
+      else {
+        data = JSON.parse(body);
+        MyList = data.characters;
+        for (i = 0; i < MyList.length; i++) {
+          const name = await GetName(MyList[i]);
+          console.log(name);
+        }
+      }
+    });
+}
 
-if (process.argv.length > 2) {
-  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
-    if (err) {
-      console.log(err);
-    }
-    const charactersURL = JSON.parse(body).characters;
-    const charactersName = charactersURL.map(
-      url => new Promise((resolve, reject) => {
-        request(url, (promiseErr, __, charactersReqBody) => {
-          if (promiseErr) {
-            reject(promiseErr);
-          }
-          resolve(JSON.parse(charactersReqBody).name);
-        });
-      }));
-
-    Promise.all(charactersName)
-      .then(names => console.log(names.join('\n')))
-      .catch(allErr => console.log(allErr));
+function GetName (url) {
+  return new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      if (error) reject(error);
+      else {
+        resolve(JSON.parse(body).name);
+      }
+    });
   });
 }
+GetCharId(MyFiles[0]);
