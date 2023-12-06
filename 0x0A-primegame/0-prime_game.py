@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """
-This represents a prime game with two contestant, the first one without prime numbers loses.
+This represents a prime game with two contestant,
+the first one without prime numbers loses.
 """
 
 
 def isWinner(x, nums):
-    """ 
+    """
     Detects the winner in the Prime Game
     """
     if x <= 0 or not nums:
